@@ -3,8 +3,8 @@ package calculation
 import (
 	"time"
 
-	"Aquarius-neo/pkg/childsupport/calculation/model"
-	"Aquarius-neo/pkg/childsupport/calculation/output"
+	"go-pkg/childsupport/calculation/model"
+	"go-pkg/childsupport/calculation/output"
 )
 
 func Calculate(
