@@ -7,7 +7,7 @@ import (
 )
 
 func TestNewAesCbcPkcs7Cipher(t *testing.T) {
-	successBlock, _ := aes.NewCipher([]byte("xtRMca7jhJCGVwfq"))
+	successBlock, _ := aes.NewCipher([]byte("testtesttesttest"))
 
 	type args struct {
 		key []byte
@@ -21,7 +21,7 @@ func TestNewAesCbcPkcs7Cipher(t *testing.T) {
 		{
 			name: "Success create 128bit key of Aes",
 			args: args{
-				key: []byte("xtRMca7jhJCGVwfq"),
+				key: []byte("testtesttesttest"),
 			},
 			want: &AesCbcPkcs7Cipher{
 				block: successBlock,
@@ -43,49 +43,9 @@ func TestNewAesCbcPkcs7Cipher(t *testing.T) {
 	}
 }
 
-func TestAesCbcPkcs7Cipher_pad(t *testing.T) {
-	type args struct {
-		b []byte
-	}
-	tests := []struct {
-		name string
-		c    *AesCbcPkcs7Cipher
-		args args
-		want []byte
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := tt.c.pad(tt.args.b); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("AesCbcPkcs7Cipher.pad() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func TestAesCbcPkcs7Cipher_unpad(t *testing.T) {
-	type args struct {
-		b []byte
-	}
-	tests := []struct {
-		name string
-		c    *AesCbcPkcs7Cipher
-		args args
-		want []byte
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := tt.c.unpad(tt.args.b); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("AesCbcPkcs7Cipher.unpad() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
 func TestAesCbcPkcs7Cipher_Encrypt(t *testing.T) {
+	successAes, _ := NewAesCbcPkcs7Cipher([]byte("testtesttesttest"))
+
 	type args struct {
 		plain []byte
 	}
@@ -93,26 +53,40 @@ func TestAesCbcPkcs7Cipher_Encrypt(t *testing.T) {
 		name    string
 		c       *AesCbcPkcs7Cipher
 		args    args
-		want    []byte
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "Success Encrypt",
+			c:    successAes,
+			args: args{
+				plain: []byte("test: this is a test text"),
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := tt.c.Encrypt(tt.args.plain)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("AesCbcPkcs7Cipher.Encrypt() error = %v, wantErr %v", err, tt.wantErr)
-				return
+			_, err := tt.c.Encrypt(tt.args.plain)
+			if err != nil {
+				t.Errorf("AesCbcPkcs7Cipher.Encrypt() error = %v", err)
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("AesCbcPkcs7Cipher.Encrypt() = %v, want %v", got, tt.want)
-			}
+			// if (err != nil) != tt.wantErr {
+			// 	t.Errorf("AesCbcPkcs7Cipher.Encrypt() error = %v, wantErr %v", err, tt.wantErr)
+			// 	return
+			// }
+
+			// if !reflect.DeepEqual(got, tt.want) {
+			// 	t.Errorf("AesCbcPkcs7Cipher.Encrypt() = %v, want %v", got, tt.want)
+			// }
 		})
 	}
 }
 
 func TestAesCbcPkcs7Cipher_Decrypt(t *testing.T) {
+	successAes, _ := NewAesCbcPkcs7Cipher([]byte("testtesttesttest"))
+	plain := "test: this is test text"
+	encrypt, _ := successAes.Encrypt([]byte(plain))
+
 	type args struct {
 		encryptedTextBase64 []byte
 	}
@@ -123,7 +97,15 @@ func TestAesCbcPkcs7Cipher_Decrypt(t *testing.T) {
 		want    string
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "Success Decrypt",
+			c:    successAes,
+			args: args{
+				encryptedTextBase64: encrypt,
+			},
+			want:    plain,
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
