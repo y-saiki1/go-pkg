@@ -11,7 +11,7 @@ func CreateSecureCookie(key, val string, t time.Duration) *http.Cookie {
 	ck.Value = val
 	ck.Secure = true
 	ck.HttpOnly = true
-	ck.SameSite = http.SameSiteNoneMode
+	ck.SameSite = http.SameSiteLaxMode
 	ck.Expires = time.Now().Add(t * time.Hour)
 	return ck
 }

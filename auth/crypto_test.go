@@ -1,11 +1,14 @@
 package auth
 
 import (
+	"crypto/aes"
 	"reflect"
 	"testing"
 )
 
 func TestNewAesCbcPkcs7Cipher(t *testing.T) {
+	successBlock, _ := aes.NewCipher([]byte("xtRMca7jhJCGVwfq"))
+
 	type args struct {
 		key []byte
 	}
@@ -15,7 +18,16 @@ func TestNewAesCbcPkcs7Cipher(t *testing.T) {
 		want    *AesCbcPkcs7Cipher
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "Success create 128bit key of Aes",
+			args: args{
+				key: []byte("xtRMca7jhJCGVwfq"),
+			},
+			want: &AesCbcPkcs7Cipher{
+				block: successBlock,
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
